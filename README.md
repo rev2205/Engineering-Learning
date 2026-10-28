@@ -1,35 +1,26 @@
-# Engineering Growth — Personal Engineering Handbook
+# Engineering Growth — Focused Learning Edition
 
-A practical, long-term system for learning how software and infrastructure work—not just memorizing commands or finishing tickets.
+This branch explores a more focused approach than the broad starter library. Rather than trying to study many engineering topics simultaneously, it starts with one operational skill: **trace a request from a hostname to a Kubernetes workload and diagnose the failure using evidence**.
 
 ## Start here
 
-1. Read `00 - Dashboard/README.md`.
-2. Follow `00 - Dashboard/13-Practices.md`.
-3. Start `03 - Networking Fundamentals/README.md`.
-4. Keep notes using `00 - Dashboard/Engineering-Notebook-Template.md`.
-5. Complete a weekly review using `08 - Weekly Reviews/Weekly-Review-Template.md`.
+1. Read [the focused roadmap](FOCUSED-ROADMAP.md).
+2. Work through [Networking Fundamentals](03%20-%20Networking%20Fundamentals/README.md) in order.
+3. Complete the labs in a local disposable environment.
+4. Use the existing [engineering notebook template](00%20-%20Dashboard/Engineering-Notebook-Template.md) to record hypotheses and evidence.
+5. Write a short incident note after each lab.
 
-## Repository map
+## What changed on this branch
 
-- `00 - Dashboard`: routines, notebook template, learning method, progress tracker.
-- `01 - Engineering Articles`: curated engineering blogs and article-reading method.
-- `02 - Technical Vocabulary`: terms, explanations, examples, review tracker.
-- `03 - Networking Fundamentals`: curriculum, labs, troubleshooting exercises.
-- `04 - Classic Papers and Books`: foundational papers and reading guides.
-- `05 - Outage Case Studies`: incident studies and postmortem framework.
-- `06 - Experiments and Projects`: hands-on projects and failure drills.
-- `07 - Open Source Learning`: contributor path and first-contribution checklist.
-- `08 - Weekly Reviews`: reflection templates and progress scorecards.
+- Added detailed explanations of DNS, IP/routing/TCP, TLS/HTTP and Kubernetes Service routing.
+- Added troubleshooting labs with controlled failures, expected observations and recovery checks.
+- Replaced the broad networking overview with a step-by-step curriculum.
+- Kept the changes on this branch so `main` remains unchanged.
 
-## Core rule
+## Learning principle
 
-**Consume less passively; explain, test, and build more actively.** For each concept, explain it in your own words, draw the flow, run a small experiment, predict an outcome, or debug a failure.
+Do not aim to memorize every command. Learn what question a command answers, what the output proves, what it does not prove, and what evidence to gather next.
 
-## Using AI responsibly
+## Safety
 
-Before asking for a solution, write what you think is happening and what you tried. Ask for hints before complete code. Verify commands in a safe environment and record what you learned. Never paste company secrets, credentials, private logs, customer data, or internal source code into an unapproved tool.
-
-## First milestone
-
-Within four weeks, explain how a browser reaches an application, how DNS/TCP/TLS/HTTP fit together, how to investigate a connection failure, and how Kubernetes networking adds another layer. Demonstrate this with diagrams, repeatable labs, and a short write-up.
+Run deliberate failures only in your own local lab or an explicitly authorized environment. Do not experiment on production or shared team clusters. Do not publish internal URLs, logs, credentials, tokens or infrastructure details.
