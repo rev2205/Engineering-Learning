@@ -1,37 +1,45 @@
-# Networking Fundamentals: Four-Week Path
+# Networking Fundamentals: Focused Four-Week Path
 
-## Goal
-Trace a request from client to application and diagnose common connection failures using evidence.
+This page is the index for a narrow learning track: **follow one request from a hostname to an application, then learn to diagnose failures at each boundary**. The detailed pages include explanations, example commands, failure patterns and self-checks.
 
-## Week 1 — Names and addressing
-Learn DNS records and caching, resolvers, IP addresses, CIDR, subnets, gateways, routing and ARP/neighbor discovery. Lab: compare DNS answers from configured resolvers and inspect local interfaces/routes. Explain: what happens after entering a hostname?
+## Read these pages in order
 
-## Week 2 — Transport and HTTP
-Learn TCP handshake, connection states, ports, UDP, HTTP methods/status codes/headers, keep-alive, proxies and timeouts. Lab: use curl verbose output and browser developer tools to inspect a request. Explain: how can DNS succeed while TCP fails?
+1. [DNS: How a Name Becomes an Address](01-DNS-Explained.md) — records, recursive resolvers, caching, TTL, NXDOMAIN and what DNS success does not prove.
+2. [IP, Routes, Ports and TCP](02-IP-Routes-Ports-TCP.md) — network path, listening ports, handshakes, refusal versus timeout.
+3. [TLS and HTTP](03-TLS-and-HTTP.md) — certificates, hostname validation, SNI, HTTP status codes and proxy/upstream clues.
+4. [Kubernetes Service Debugging](04-Kubernetes-Service-Debugging.md) — labels/selectors, Service ports, EndpointSlices, readiness and Pod networking.
+5. [Guided Troubleshooting Labs](05-Troubleshooting-Labs.md) — controlled exercises that intentionally break a local test service and restore it.
 
-## Week 3 — TLS and routing
-Learn certificates, trust stores, expiry, SAN, SNI, TLS handshake, reverse proxies, load balancers and health checks. Inspect a public site's certificate with a browser or OpenSSL. Explain: why can a certificate be valid for one hostname but invalid for another?
+## Weekly pace
 
-## Week 4 — Kubernetes networking
-Learn Pod IPs, Services, ClusterIP, CoreDNS, EndpointSlices, readiness, Ingress/Gateway concepts and NetworkPolicy. In a local cluster, test service DNS, then intentionally break a Service selector and diagnose it.
+### Week 1 — DNS and the destination
+Learn the difference between a hostname, DNS record, resolver, IP address and reachable service. Practice reading `dig` or `nslookup` output. Deliverable: explain a DNS lookup in your own words and list three reasons DNS success does not prove the website is healthy.
 
-## Troubleshooting sequence
-1. Confirm hostname, port, path, timestamp and exact error.
-2. Check name resolution.
-3. Check route and reachability where appropriate.
-4. Check TCP connection.
-5. Check TLS hostname, trust chain and expiry.
-6. Check HTTP response and upstream behavior.
-7. Check application health and dependencies.
-8. Compare client evidence with server logs and metrics.
+### Week 2 — Network path and TCP
+Learn interfaces, routes, ports, TCP connection setup, refusal and timeout. Use inspection commands on your own machine and curl against a public or authorized endpoint. Deliverable: a comparison table for DNS failure, TCP refusal and TCP timeout.
 
-## Useful tools
-- dig / nslookup: DNS.
-- ip addr / ip route: Linux interfaces and routes.
-- ss: socket inspection.
-- curl -v: HTTP/TLS details.
-- openssl s_client: TLS inspection.
-- kubectl get svc,endpointslices,pods: Kubernetes routing objects.
-- kubectl describe / logs: resource details and application output.
+### Week 3 — TLS and HTTP
+Learn what certificate validation checks, why hostname matters, and how HTTP status codes help localize the problem. Deliverable: annotate a `curl -v` output by stage, taking care not to share cookies or tokens.
 
-Use authorized, non-production labs for experiments.
+### Week 4 — Kubernetes Service traffic
+Learn how Services select Pods, how EndpointSlices represent backends, and how readiness and targetPort affect traffic. Complete a fault drill in Minikube or kind. Deliverable: a short incident note containing symptom, hypothesis, evidence, root cause, recovery and verification.
+
+## Use one debugging sequence
+
+**Name → route/path → TCP → TLS → HTTP → Service/endpoints → application → dependencies.**
+
+At each step ask:
+- What evidence would I expect if this layer is healthy?
+- What did I observe?
+- What does that observation rule out?
+- What does it not rule out?
+- What is the next smallest, safest check?
+
+## Rules for the labs
+
+- Use a local disposable cluster or a system you are authorized to test.
+- Never inject faults into production or a shared team cluster.
+- Change one variable at a time.
+- Record the baseline before breaking anything.
+- Restore the correct configuration and verify recovery.
+- Treat logs as one evidence source, not the whole truth.
